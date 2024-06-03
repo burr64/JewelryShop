@@ -1,3 +1,10 @@
+![image](https://github.com/burr64/JewelryShop/assets/118873468/340a1769-67db-43ea-a773-8e75ed5f2e48)
+![image](https://github.com/burr64/JewelryShop/assets/118873468/d4c6dcd7-5651-4254-8198-30c2fdf9304f)
+![image](https://github.com/burr64/JewelryShop/assets/118873468/5b9c29b0-b5ab-4e9e-935c-7adbbd9dacd4)
+![image](https://github.com/burr64/JewelryShop/assets/118873468/afacee31-38b1-44f6-ac93-b78edbb92129)
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
