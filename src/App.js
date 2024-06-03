@@ -9,6 +9,8 @@ import Stub from "./components/Stub";
 import Catalog from "./components/Catalog";
 import Orders from "./components/Orders";
 import ProductCard from "./components/ProductCard";
+import ResetPassword from "./components/ResetPassword";
+import Favorite from "./components/Favorite";
 
 function App() {
     return (
@@ -19,6 +21,8 @@ function App() {
                 <Route path="/register" element={<Register/>} />
                 <Route path="/stub" element={<Stub/>} />
                 <Route path="/catalog" element={<Catalog/>} />
+                <Route path="/reset-password" element={<ResetPassword/>}/>
+                <Route path="/favorite" element={<Favorite/>}/>
                 <Route
                     path="/orders"
                     element={

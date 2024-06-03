@@ -14,7 +14,7 @@ function Home() {
                 <Header />
                 <div className="position-relative mb-2">
                     <img
-                        src="https://mdbcdn.b-cdn.net/img/new/slides/041.webp"
+                        src="https://static.tildacdn.com/tild3333-6332-4236-b565-373739356135/image_11.png"
                         className="img-fluid"
                         alt="shop"
                     />

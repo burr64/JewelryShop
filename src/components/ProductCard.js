@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import Carousel from "./Carousel";
@@ -53,6 +53,23 @@ const ProductCard = () => {
         await quantityChange(cartItems, setCartItems, productId, action);
     };
 
+    const handleAddToFavorite = async () => {
+        try {
+            const response = await fetch(`/favorite/add/${productId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Failed to add item to favorite');
+            }
+        } catch (error) {
+            console.error('Error adding item to favorite:', error);
+        }
+    };
+
     return (
         <div>
             <Header />
@@ -64,23 +81,34 @@ const ProductCard = () => {
                     <div className="col-md-6">
                         <h1>{product?.name}</h1>
                         <p>Камень: {product?.stone_name} {product?.carat} карат</p>
+                        <p>Класс: {product?.stone_class}</p>
+                        <p>Цвет: {product?.stone_color}</p>
+                        <p>Огранка: {product?.shape_name}</p>
                         <p>Металл: {product?.metal_name} {product?.purity} пробы</p>
                         <p>Поставщик: {product?.provider_name}</p>
-                        <h3>{product?.price} ₽</h3>
+                        <h3>{product?.price * (1 + product?.percent / 100)} ₽</h3>
                         <div className="d-flex justify-content-between align-items-center mb-3">
                             {cartItems.some(item => item.id === product.id && item.count > 0) ? (
                                 <div className="d-flex align-items-center">
-                                    <img src={minus} width="20" height="20" alt="Minus" className="me-2" onClick={() => handleQuantityChange(product.id, 'decrease')} />
-                                    <input id={`quantity-${product.id}`} min="0" name="quantity" value={cartItems.find(item => item.id === product.id).count} type="number" className="form-control ultra-small-select" readOnly />
-                                    <img src={plus} width="20" height="20" alt="Plus" className="ms-2" onClick={() => handleQuantityChange(product.id, 'increase')} />
+                                    <img src={minus} width="20" height="20" alt="Minus" className="me-2"
+                                         onClick={() => handleQuantityChange(product.id, 'decrease')}/>
+                                    <input id={`quantity-${product.id}`} min="0" name="quantity"
+                                           value={cartItems.find(item => item.id === product.id).count} type="number"
+                                           className="form-control ultra-small-select" readOnly/>
+                                    <img src={plus} width="20" height="20" alt="Plus" className="ms-2"
+                                         onClick={() => handleQuantityChange(product.id, 'increase')}/>
                                 </div>
                             ) : (
-                                <button className="btn btn-primary" onClick={() => { addToCart(product.id, navigate); window.location.reload(); }}>Добавить в корзину</button>
+                                <button className="btn btn-primary" onClick={() => {
+                                    addToCart(product.id, navigate);
+                                    window.location.reload();
+                                }}>Добавить в корзину</button>
                             )}
-                            <Link to="/Stub" className="btn me-1">
-                                <img src={favorite} alt="Избранное" width="20" height="20" />
-                            </Link>
+
                         </div>
+                        <button className="btn me-1" onClick={handleAddToFavorite}>
+                            <img src={favorite} alt="Избранное" width="20" height="20"/>
+                        </button>
                     </div>
                 </div>
             </div>

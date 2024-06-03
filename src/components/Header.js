@@ -46,7 +46,7 @@ function Header() {
                 )}
                 {isAuthenticated && (
                     <>
-                        <Link to="/Stub" className="btn me-1">
+                        <Link to="/favorite" className="btn me-1">
                             <img src={favorite} alt="Избранное" width="20" height="20" />
                         </Link>
                         <Link to="/orders" className="btn me-1">

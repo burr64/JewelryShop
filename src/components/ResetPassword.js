@@ -3,35 +3,40 @@ import { Link, useNavigate } from 'react-router-dom';
 import './All.css';
 import back from "./img/back.svg";
 
-function Login() {
+function ResetPassword() {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
+    const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const response = await fetch('/login', {
+            const response = await fetch('/reset-password', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({ email, newPassword, confirmPassword }),
             });
 
+            const data = await response.json();
+
             if (response.ok) {
-                const data = await response.json();
-                localStorage.setItem('token', data.token);
-                navigate('/');
+                setMessage(data.message);
+                setError('');
+                navigate('/login');
             } else {
-                const data = await response.json();
                 setError(data.message);
+                setMessage('');
             }
         } catch (error) {
-            console.error('Error logging in', error);
+            console.error('Error resetting password', error);
             setError('Server error');
+            setMessage('');
         }
     };
 
@@ -49,7 +54,7 @@ function Login() {
                                         </Link>
                                     </div>
                                     <h2 className="fw-bold mb-2 text-uppercase">AVE.DIAMONDS</h2>
-                                    <p className="fs-5 text-dark-60 mb-3">Авторизация</p>
+                                    <p className="fs-5 text-dark-60 mb-3">Смена пароля</p>
                                     <form onSubmit={handleSubmit}>
                                         <div className="mb-3 row align-items-center">
                                             <label htmlFor="staticEmail" className="fs-5 col-4 col-form-label">Почта</label>
@@ -65,32 +70,36 @@ function Login() {
                                             </div>
                                         </div>
                                         <div className="mb-3 row align-items-center">
-                                            <label htmlFor="inputPassword" className="fs-5 col-4 col-form-label">Пароль</label>
+                                            <label htmlFor="inputNewPassword" className="fs-5 col-4 col-form-label">Новый пароль</label>
                                             <div className="col-8">
                                                 <input
                                                     type="password"
                                                     className="form-control"
-                                                    id="inputPassword"
+                                                    id="inputNewPassword"
                                                     placeholder="********"
-                                                    value={password}
-                                                    onChange={(e) => { setPassword(e.target.value); }}
+                                                    value={newPassword}
+                                                    onChange={(e) => { setNewPassword(e.target.value); }}
                                                 />
                                             </div>
                                         </div>
-
-                                        <p className="small mb-3 pb-lg-2">
-                                            <Link to="/reset-password" className="text-dark-50" href="#!">Не помню пароль</Link>
-                                        </p>
-
-                                        <button className="btn btn-outline-dark btn-lg px-5" type="submit">Войти</button>
+                                        <div className="mb-3 row align-items-center">
+                                            <label htmlFor="inputConfirmPassword" className="fs-5 col-4 col-form-label">Повторите новый пароль</label>
+                                            <div className="col-8">
+                                                <input
+                                                    type="password"
+                                                    className="form-control"
+                                                    id="inputConfirmPassword"
+                                                    placeholder="********"
+                                                    value={confirmPassword}
+                                                    onChange={(e) => { setConfirmPassword(e.target.value); }}
+                                                />
+                                            </div>
+                                        </div>
+                                        <button className="btn btn-outline-dark btn-lg px-5" type="submit">Сменить пароль</button>
                                     </form>
+                                    {message && <p className="text-success mt-3">{message}</p>}
+                                    {error && <p className="text-danger mt-3">{error}</p>}
                                 </div>
-                                <div>
-                                    <p className="mb-0">
-                                        <Link to="/register" className="text-dark-50 fw-bold">Зарегистрироваться</Link>
-                                    </p>
-                                </div>
-                                {error && <p className="text-danger mt-0">{error}</p>}
                             </div>
                         </div>
                     </div>
@@ -100,4 +109,4 @@ function Login() {
     );
 }
 
-export default Login;
+export default ResetPassword;
